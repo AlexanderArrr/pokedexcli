@@ -2,6 +2,7 @@ package pokeapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -32,6 +33,10 @@ func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
 		return RespShallowLocations{}, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return RespShallowLocations{}, fmt.Errorf("invalid request")
+	}
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
