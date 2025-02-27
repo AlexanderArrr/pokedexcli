@@ -7,22 +7,22 @@ import (
 	"net/http"
 )
 
-func (c *Client) ListPokemon(locationName string) (RespLocationArea, error) {
+func (c *Client) LocationArea(locationName string) (RespLocationArea, error) {
 	if locationName == "" {
 		fmt.Println("Missing area name! How to use explore:")
 		fmt.Println("explore <area-name>")
 		return RespLocationArea{}, fmt.Errorf("missing parameter")
 	}
 
-	url := baseURL + "/location-area/" + locationName
+	url := baseURL + "location-area/" + locationName
 
 	if val, ok := c.cache.Get(url); ok {
-		pokemonResp := RespLocationArea{}
-		err := json.Unmarshal(val, &pokemonResp)
+		locationArea := RespLocationArea{}
+		err := json.Unmarshal(val, &locationArea)
 		if err != nil {
 			return RespLocationArea{}, err
 		}
-		return pokemonResp, nil
+		return locationArea, nil
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
